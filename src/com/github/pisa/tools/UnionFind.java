@@ -1,0 +1,11 @@
+package com.github.pisa.tools;
+
+/**
+ * Created by IntelliJ IDEA.
+ * User: max
+ * Date: 6/20/11
+ * Time: 1:42 AM
+ * To change this template use File | Settings | File Templates.
+ */
+public class UnionFind {
+}
