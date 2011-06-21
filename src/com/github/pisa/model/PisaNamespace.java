@@ -1,6 +1,6 @@
 package com.github.pisa.model;
 
-import java.util.*;
+import com.github.pisa.tools.TwoWayMap;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,27 +10,35 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class PisaNamespace {
-    final private PisaDb db;
-    final private Map<String, Long> nameMap = new HashMap<String, Long>();
-    final private Map<Long, Set<String>> reverseNameMap = new HashMap<Long, Set<String>>();
-
-    public PisaNamespace(PisaDb db) {
-        this.db = db;
-    }
+    final private PisaDbStandinLayer db = new PisaDbStandinLayer();
+    final private TwoWayMap<String, Long> nameMap = new TwoWayMap<String, Long>();
 
     public void addObject(String name, PisaObject object) {
         long id = db.addPisaObject(object);
         nameMap.put(name, id);
-        if (!reverseNameMap.containsKey(id)) reverseNameMap.put(id, new HashSet<String>());
-        reverseNameMap.get(id).add(name);
     }
 
-    public void addObject(String name, long... data) {
+    public void addObject(String name, String... refs) {
+        long[] data = new long[refs.length];
+        for(int i = 0; i < refs.length; i++) data[i] = nameMap.get(refs[i]);
         addObject(name, new PisaObject(data));
     }
+    
+    public PisaObject getPisaObject(String name) {
+    	if (!nameMap.containsKey(name)) return null;
+    	return db.getPisaObject(nameMap.get(name));
+    }
 
-    public boolean checkEqual(String obj1, String obj2) {
-        checkEqual(obj1, obj2, )
+    public boolean checkEqual(String name1, String name2) {
+       long ref1 = nameMap.get(name1);
+       long ref2 = nameMap.get(name2);
+       boolean equal = db.checkEqual(ref1, ref2);
+       if (equal && (ref1 != ref2)) {
+           long redundantRef = Math.max(ref1, ref2);
+           long originalRef = Math.min(ref1, ref2);
+           nameMap.redirect(redundantRef, originalRef);
+       }
+       return equal;
     }
 
 }
