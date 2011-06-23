@@ -1,5 +1,7 @@
 package com.github.pisa.model;
 
+import com.github.pisa.model.node.PisaNode;
+import com.github.pisa.model.node.PisaObject;
 import com.github.pisa.tools.TwoWayMap;
 import com.github.pisa.tools.UnionFind;
 
@@ -15,7 +17,7 @@ public class PisaDbStandinLayer {
 
     final private TwoWayMap<Long, Long> standIns = new TwoWayMap<Long, Long>();
 
-    public long addPisaObject(PisaObject object) {
+    public long addPisaObject(PisaNode object) {
         return pisaDb.addPisaObject(object);
     }
 
@@ -27,7 +29,7 @@ public class PisaDbStandinLayer {
         return standIns.containsKey(ref)? standIns.get(ref): ref;
     }
 
-    public PisaObject getPisaObject(long reference) {
+    public PisaNode getPisaObject(long reference) {
         return pisaDb.getPisaObject(resolveReference(reference));
     }
 
@@ -59,8 +61,8 @@ public class PisaDbStandinLayer {
 
         if (uf.isEqual(ref1, ref2)) return true;
 
-        PisaObject pobj1 = getPisaObject(ref1);
-        PisaObject pobj2 = getPisaObject(ref2);
+        PisaNode pobj1 = getPisaObject(ref1);
+        PisaNode pobj2 = getPisaObject(ref2);
 
         if (pobj1.size() != pobj2.size()) return false;
 

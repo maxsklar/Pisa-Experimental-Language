@@ -1,5 +1,8 @@
 package com.github.pisa.model;
 
+import com.github.pisa.model.node.PisaNode;
+import com.github.pisa.model.node.PisaObject;
+import com.github.pisa.model.node.PisaObjectPrimitive;
 import com.github.pisa.tools.TwoWayMap;
 
 /**
@@ -13,7 +16,7 @@ public class PisaNamespace {
     final private PisaDbStandinLayer db = new PisaDbStandinLayer();
     final private TwoWayMap<String, Long> nameMap = new TwoWayMap<String, Long>();
 
-    public void addObject(String name, PisaObject object) {
+    public void addObject(String name, PisaNode object) {
         long id = db.addPisaObject(object);
         nameMap.put(name, id);
     }
@@ -24,9 +27,23 @@ public class PisaNamespace {
         addObject(name, new PisaObject(data));
     }
     
-    public PisaObject getPisaObject(String name) {
+    public void addStringObject(String name, String object) {
+    	long[] chars = new long[name.length()];
+    	for(int i = 0; i < name.length(); i++) {
+    		char c = name.charAt(i);
+    		long ref = db.addPisaObject(new PisaObjectPrimitive.Char(c));
+    		chars[i] = ref;
+    	}
+    	addObject(name, new PisaObject(chars));
+    }
+    
+    public PisaNode getPisaObject(String name) {
     	if (!nameMap.containsKey(name)) return null;
     	return db.getPisaObject(nameMap.get(name));
+    }
+    
+    public PisaNode getPisaObject(long ref) {
+    	return db.getPisaObject(ref);
     }
 
     public boolean checkEqual(String name1, String name2) {

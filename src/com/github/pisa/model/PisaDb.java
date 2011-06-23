@@ -4,6 +4,9 @@ import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.pisa.model.node.PisaNode;
+import com.github.pisa.model.node.PisaObject;
+
 /**
  * Created by IntelliJ IDEA.
  * User: max
@@ -13,11 +16,11 @@ import java.util.Map;
  */
 public class PisaDb {
     //Actual objects
-    final private Map<Long, PisaObject> pisaObjects = new HashMap<Long, PisaObject>();
+    final private Map<Long, PisaNode> pisaObjects = new HashMap<Long, PisaNode>();
 
     private long identifier = 0;
 
-    public long addPisaObject(PisaObject object) {
+    public long addPisaObject(PisaNode object) {
         pisaObjects.put(identifier, object);
         return identifier++;
     }
@@ -30,7 +33,7 @@ public class PisaDb {
      * @param reference
      * @return pisa object at the reference, null if the reference is forgotten
      */
-    public PisaObject getPisaObject(long reference) {
+    public PisaNode getPisaObject(long reference) {
         if (reference < 0 || reference >= identifier)
             throw new InvalidParameterException("ref " + reference + " out of range");
 
