@@ -1,5 +1,9 @@
 package com.github.pisa.model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -52,5 +56,21 @@ public class TestPisaNamespace {
         }
         
         Assert.assertTrue(accum == 115);
+    }
+    
+    @Test public void testListPrefix() throws FileNotFoundException {
+    	PisaNamespace ns = new PisaNamespace();
+        ns.addObject("false");
+        ns.addObject("true", "false");
+        
+        ns.addObject("a", "true", "b");
+        ns.addObject("b", "false");
+    	
+    	//File f = new File("PisaScripts/script.pisa");
+    	
+    	//Scanner sc = new Scanner(f);
+    	//while(sc.hasNextLine()) {
+    	//	System.out.println(sc.nextLine());
+    	//}
     }
 }

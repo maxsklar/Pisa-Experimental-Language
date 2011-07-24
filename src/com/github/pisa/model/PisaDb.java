@@ -8,14 +8,12 @@ import com.github.pisa.model.node.PisaNode;
 import com.github.pisa.model.node.PisaObject;
 
 /**
- * Created by IntelliJ IDEA.
  * User: max
  * Date: 6/20/11
  * Time: 1:15 AM
  * To change this template use File | Settings | File Templates.
  */
 public class PisaDb {
-    //Actual objects
     final private Map<Long, PisaNode> pisaObjects = new HashMap<Long, PisaNode>();
 
     private long identifier = 0;
@@ -23,10 +21,6 @@ public class PisaDb {
     public long addPisaObject(PisaNode object) {
         pisaObjects.put(identifier, object);
         return identifier++;
-    }
-
-    public long addPisaObject(long... values) {
-        return addPisaObject(new PisaObject(values));
     }
 
     /**

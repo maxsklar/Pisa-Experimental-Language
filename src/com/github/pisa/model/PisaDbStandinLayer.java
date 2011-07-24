@@ -1,5 +1,8 @@
 package com.github.pisa.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.github.pisa.model.node.PisaNode;
 import com.github.pisa.model.node.PisaObject;
 import com.github.pisa.tools.TwoWayMap;
@@ -29,12 +32,23 @@ public class PisaDbStandinLayer {
         return standIns.containsKey(ref)? standIns.get(ref): ref;
     }
 
-    public PisaNode getPisaObject(long reference) {
-        return pisaDb.getPisaObject(resolveReference(reference));
+    public PisaNode getPisaObject(PisaNamespace ns, long reference) {
+    	reference = resolveReference(reference);
+        PisaNode node = pisaDb.getPisaObject(reference);
+        
+        Set<String> seenParams = new HashSet<String>();
+        while(node.getParameterName() != null) {
+        	String paramName = node.getParameterName();
+        	if (seenParams.contains(paramName)) return null; //Param definition cycle
+        	seenParams.add(paramName);
+        	node = ns.getPisaObject(paramName);
+        }
+        
+        return node;
     }
 
-    public boolean checkEqual(long ref1, long ref2) {
-        boolean equal = checkEqual(ref1, ref2, new UnionFind<Long>());
+    public boolean checkEqual(long ref1, long ref2, PisaNamespace ns) {
+        boolean equal = checkEqual(ref1, ref2, new UnionFind<Long>(), ns);
         if (equal) {
             long resRef1 = resolveReference(ref1);
             long resRef2 = resolveReference(ref2);
@@ -53,7 +67,7 @@ public class PisaDbStandinLayer {
         return equal;
     }
 
-    private boolean checkEqual(Long ref1, Long ref2, UnionFind<Long> uf) {
+    private boolean checkEqual(Long ref1, Long ref2, UnionFind<Long> uf, PisaNamespace ns) {
         ref1 = resolveReference(ref1);
         ref2 = resolveReference(ref2);
 
@@ -61,15 +75,15 @@ public class PisaDbStandinLayer {
 
         if (uf.isEqual(ref1, ref2)) return true;
 
-        PisaNode pobj1 = getPisaObject(ref1);
-        PisaNode pobj2 = getPisaObject(ref2);
+        PisaNode pobj1 = getPisaObject(ns, ref1);
+        PisaNode pobj2 = getPisaObject(ns, ref2); 
 
         if (pobj1.size() != pobj2.size()) return false;
 
         uf.union(ref1, ref2);
 
         for(int i = 0; i < pobj1.size(); i++) {
-             boolean equal = checkEqual(ref1, ref2, uf);
+             boolean equal = checkEqual(ref1, ref2, uf, ns);
              if (!equal) return false;
         }
 

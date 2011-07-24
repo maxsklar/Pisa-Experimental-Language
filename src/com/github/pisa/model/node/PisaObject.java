@@ -17,5 +17,10 @@ public class PisaObject implements PisaNode {
 
     public int size() { return data.length; }
 
-    public long get(int i) { return data[i % size()]; }
+    public long get(int i) { 
+    	return (i >= 0 && i < data.length)? data[i]: PisaNode.OUT_OF_BOUNDS_ERR; 
+    }
+
+	@Override
+	public String getParameterName() { return null; }
 }

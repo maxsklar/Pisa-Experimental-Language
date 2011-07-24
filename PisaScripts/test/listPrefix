@@ -1,0 +1,4 @@
+false = ()
+true = ()
+a = (true, b)
+b = (true, false)

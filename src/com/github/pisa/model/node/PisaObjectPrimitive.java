@@ -16,6 +16,11 @@ public class PisaObjectPrimitive {
 		public long get(int i) {
 			return x ? -1: 0;
 		}
+
+		@Override
+		public String getParameterName() {
+			return null;
+		}
 	}
 	
 	public static class Byte implements PisaNode {
@@ -31,6 +36,11 @@ public class PisaObjectPrimitive {
 		@Override
 		public long get(int i) {
 			return (((x >> i) & 1) == 0)? 0 : 1;
+		}
+
+		@Override
+		public String getParameterName() {
+			return null;
 		}
 	}
 	
@@ -48,6 +58,11 @@ public class PisaObjectPrimitive {
 		public long get(int i) {
 			return (((x >> i) & 1) == 0)? 0 : 1;
 		}
+
+		@Override
+		public String getParameterName() {
+			return null;
+		}
 	}	
 	
 	public static class Short implements PisaNode {
@@ -63,6 +78,11 @@ public class PisaObjectPrimitive {
 		@Override
 		public long get(int i) {
 			return (((x >> i) & 1) == 0)? 0 : 1;
+		}
+
+		@Override
+		public String getParameterName() {
+			return null;
 		}
 	}
 	
@@ -81,6 +101,11 @@ public class PisaObjectPrimitive {
 		public long get(int i) {
 			return (((x >> i) & 1) == 0)? 0 : 1;
 		}
+
+		@Override
+		public String getParameterName() {
+			return null;
+		}
 	}	
 	
 	public static class Long implements PisaNode {
@@ -97,6 +122,11 @@ public class PisaObjectPrimitive {
 		public long get(int i) {
 			return (((x >> i) & 1) == 0)? 0 : 1;
 		}
+
+		@Override
+		public String getParameterName() {
+			return null;
+		}
 	}	
 	public static class Float implements PisaNode {
 		final private float x;
@@ -112,6 +142,11 @@ public class PisaObjectPrimitive {
 		public long get(int i) {
 			return (((java.lang.Float.floatToRawIntBits(x) >> i) & 1) == 0)? 0 : 1;
 		}
+
+		@Override
+		public String getParameterName() {
+			return null;
+		}
 	}	
 	public static class Double implements PisaNode {
 		final private double x;
@@ -126,6 +161,11 @@ public class PisaObjectPrimitive {
 		@Override
 		public long get(int i) {
 			return (((java.lang.Double.doubleToRawLongBits(x) >> i) & 1) == 0)? 0 : 1;
+		}
+
+		@Override
+		public String getParameterName() {
+			return null;
 		}
 	}
 }
